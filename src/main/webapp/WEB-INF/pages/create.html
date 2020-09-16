@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Create new user</title>
+    </head>
+<body>
+<h1>Create new user</h1>
+<form method="post">
+    <table border="1" cellpadding="15">
+        <tr>
+            <th>Enter name</th>
+            <th>Enter password</th>
+            <th>Enter role</th>
+        </tr>
+        <tr th:align="center">
+            <td><input required type="text" name="name"></td>
+            <td><input required type="password" name="password"></td>
+            <td>
+                <input type="checkbox" name="adminRole" value="ROLE_ADMIN"> Admin
+                <input type="checkbox" name="userRole" value="ROLE_USER"> User
+            </td>
+        </tr>
+    </table>
+    <p>
+        <input type="submit" value="Create">
+    </p>
+</form>
+<p>
+    <a th:href="@{/admin/show}">
+        <input type="submit" value="Back">
+    </a>
+</p>
+</body>
+</html>

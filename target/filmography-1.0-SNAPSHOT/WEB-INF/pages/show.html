@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<h1>Users</h1>
+<table border="1" cellpadding="15">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th colspan="2">Action</th>
+    </tr>
+    <tr th:each="user : ${users}" th:align="center">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
+        <td>
+            <p th:each="role : ${user.roles}" th:text="${role}"></p>
+        </td>
+        <td>
+            <a th:href="@{/admin/update(id=${user.id})}">
+                <input type="submit" value="Update">
+            </a>
+        </td>
+        <td>
+            <a th:href="@{/admin/delete(id=${user.id})}">
+                <input type="submit" value="Delete">
+            </a>
+        </td>
+    </tr>
+</table>
+<p>
+    <a th:href="@{/admin/create}">
+        <input type="submit" value="Create new user">
+    </a>
+</p>
+<p>
+    <a th:href="@{/logout}">
+        <input type="submit" value="Logout">
+    </a>
+</p>
+</body>
+</html>
