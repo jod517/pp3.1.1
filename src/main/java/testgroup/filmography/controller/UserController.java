@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import testgroup.filmography.dto.UserDto;
 import testgroup.filmography.model.Role;
 import testgroup.filmography.model.User;
 import testgroup.filmography.service.RoleService;
@@ -38,64 +39,61 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value = "/admin/create", method = RequestMethod.GET)
-    public String createUser(ModelMap model) {
-        model.addAttribute("newUser", new User());
+    @RequestMapping(value = "admin/create", method = RequestMethod.GET)
+    public String showCreateUserForm(@ModelAttribute("userDto") UserDto userDto) {
         return "create";
     }
 
-    @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
-    public String createdUser(@ModelAttribute("newUser") User user,
-                              @RequestParam(value = "adminRole", defaultValue = "") String adminRole,
-                              @RequestParam(value = "userRole", defaultValue = "") String userRole) {
-
-        user.setRoles(getRoles(adminRole, userRole));
+    @RequestMapping(value = "admin/create", method = RequestMethod.POST)
+    public String createUser(@ModelAttribute("useDto") UserDto userDto) {
+        User user = new User();
+        user.setName(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        user.setRoles(getRoles(userDto.getRoles()));
         userService.createUser(user);
         return "redirect:/admin/show";
     }
 
-    @RequestMapping(value = "/admin/show", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/show", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "show";
     }
 
-    @RequestMapping(value = "/admin/update", method = RequestMethod.GET)
-    public String updateUser(@RequestParam(name = "id", defaultValue = "0") long id,
-                             ModelMap model) {
-
-        model.addAttribute("user", userService.getUserById(id));
+    @RequestMapping(value = "admin/update", method = RequestMethod.GET)
+    public String showUpdateUserForm(@ModelAttribute("userDto") UserDto userDto,
+                                     @RequestParam("id") long id) {
+        userDto.setId(id);
         return "update";
     }
 
-    @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
-    public String updatedUser(@ModelAttribute("user") User user,
-                              @RequestParam(value = "adminRole", defaultValue = "") String adminRole,
-                              @RequestParam(value = "userRole", defaultValue = "") String userRole) {
-
-        Set<Role> roles = userService.getUserById(user.getId()).getRoles();
-        user.setRoles(getRoles(adminRole, userRole));
+    @RequestMapping(value = "admin/update", method = RequestMethod.POST)
+    public String updateUser(@ModelAttribute("userDto") UserDto userDto) {
+        User user = userService.getUserById(userDto.getId());
+        Set<Role> roles = user.getRoles();
+        user.setName(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
         roles.forEach(x -> roleService.deleteRole(x.getId()));
         return "redirect:/admin/show";
     }
 
-    @RequestMapping(value = "/admin/delete", method = RequestMethod.GET)
-    public String deleteUser(@RequestParam(name = "id", defaultValue = "0") long id) {
+    @RequestMapping(value = "admin/delete", method = RequestMethod.GET)
+    public String deleteUser(@RequestParam("id") long id) {
         userService.deleteUser(id);
         return "redirect:/admin/show";
     }
 
-    public Set<Role> getRoles(String adminRole, String userRole) {
+    public Set<Role> getRoles(List<String> rolesForUser) {
         Set<Role> roles = new HashSet<>();
-        if (!adminRole.isEmpty()) {
-            roles.add(new Role(adminRole));
+        if (rolesForUser.contains("admin")) {
+            roles.add(new Role("ROLE_ADMIN"));
         }
-        if (!userRole.isEmpty()) {
-            roles.add(new Role(userRole));
+        if (rolesForUser.contains("user")) {
+            roles.add(new Role("ROLE_USER"));
         }
         return roles;
     }
 }
-

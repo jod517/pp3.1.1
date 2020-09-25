@@ -8,8 +8,13 @@ import testgroup.filmography.userDAO.RoleDao;
 @Service
 public class RoleServiceImpl implements RoleService {
 
+
+    private final RoleDao roleDao;
+
     @Autowired
-    private RoleDao roleDao;
+    public RoleServiceImpl(RoleDao roleDao) {
+        this.roleDao=roleDao;
+    }
 
     @Override
     @Transactional

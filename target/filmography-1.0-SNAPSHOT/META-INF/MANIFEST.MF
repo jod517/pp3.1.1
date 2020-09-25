@@ -3,6 +3,6 @@ Created-By: IntelliJ IDEA
 Built-By: Лев Лосев
 Build-Jdk: 1.8.0_201
 Implementation-Version: 1.0-SNAPSHOT
-Implementation-Vendor-Id: testgroup
+Implementation-Vendor-Id: ru.javamentor
 Main-Class: ${start-class}
 

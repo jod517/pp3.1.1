@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <head>
         <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     </head>
 <body>
 <h1>Create new user</h1>
-<form method="post">
+<form action=# th:action="@{/admin/create}" th:object="${userDto}"  method="post">
     <table border="1" cellpadding="15">
         <tr>
             <th>Enter name</th>
@@ -15,11 +15,11 @@
             <th>Enter role</th>
         </tr>
         <tr th:align="center">
-            <td><input required type="text" name="name"></td>
-            <td><input required type="password" name="password"></td>
-            <td>
-                <input type="checkbox" name="adminRole" value="ROLE_ADMIN"> Admin
-                <input type="checkbox" name="userRole" value="ROLE_USER"> User
+            <td><input required type="text" th:field="*{username}"></td>
+            <td><input required type="password" th:field="*{password}"></td>
+            <td th:for="*{roles}">
+                <input type="checkbox" th:field="*{roles}" th:value="admin"> Admin
+                <input type="checkbox" th:field="*{roles}" th:value="user"> User
             </td>
         </tr>
     </table>

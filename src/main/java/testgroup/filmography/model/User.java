@@ -23,17 +23,24 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER,//загрузка коллекции
-            cascade  = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(name = "user_roles",        // промежуточная таблица
-            joinColumns = @JoinColumn(name = "user_id"), // имя пром таблицы
-            inverseJoinColumns = @JoinColumn(name = "role_id")) // имя столбца связ с классом владельцем
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
     }
 
     public User(String name, String password, Set<Role> roles) {
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String name, String password) {
+        this.id = id;
         this.name = name;
         this.password = password;
         this.roles = roles;
