@@ -39,12 +39,12 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value = "admin/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/create", method = RequestMethod.GET)
     public String showCreateUserForm(@ModelAttribute("userDto") UserDto userDto) {
         return "create";
     }
 
-    @RequestMapping(value = "admin/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
     public String createUser(@ModelAttribute("useDto") UserDto userDto) {
         User user = new User();
         user.setName(userDto.getUsername());
@@ -54,21 +54,21 @@ public class UserController {
         return "redirect:/admin/show";
     }
 
-    @RequestMapping(value = "admin/show", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/show", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "show";
     }
 
-    @RequestMapping(value = "admin/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/update", method = RequestMethod.GET)
     public String showUpdateUserForm(@ModelAttribute("userDto") UserDto userDto,
                                      @RequestParam("id") long id) {
         userDto.setId(id);
         return "update";
     }
 
-    @RequestMapping(value = "admin/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
     public String updateUser(@ModelAttribute("userDto") UserDto userDto) {
         User user = userService.getUserById(userDto.getId());
         Set<Role> roles = user.getRoles();
@@ -80,7 +80,7 @@ public class UserController {
         return "redirect:/admin/show";
     }
 
-    @RequestMapping(value = "admin/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/delete", method = RequestMethod.GET)
     public String deleteUser(@RequestParam("id") long id) {
         userService.deleteUser(id);
         return "redirect:/admin/show";

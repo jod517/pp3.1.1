@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+</head>
+<body>
+<h1>Update user</h1>
+<form action="#" th:action="@{/admin/update}" th:object="${userDto}" method="post">
+    <table border="1" cellpadding="15">
+        <tr>
+            <th>Id</th>
+            <th>New name</th>
+            <th>New password</th>
+            <th>New role</th>
+        </tr>
+        <tr th:align="center">
+            <td><input required type="number" th:field="*{id}" th:value="${userDto.id}" readonly></td>
+            <td><input required type="text" th:field="*{username}"></td>
+            <td><input required type="password" th:field="*{password}"></td>
+            <td th:for="*{roles}">
+                <input type="checkbox" th:field="*{roles}" th:value="admin"> Admin
+                <input type="checkbox" th:field="*{roles}" th:value="user"> User
+            </td>
+        </tr>
+    </table>
+    <p>
+        <input type="submit" value="Update">
+    </p>
+</form>
+<p>
+    <a th:href="@{/admin/show}">
+        <input type="submit" value="Back">
+    </a>
+</p>
+</body>
+</html>
